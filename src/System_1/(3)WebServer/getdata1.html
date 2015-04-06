@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+	div.chart{
+		font-family:sans-serif;
+		font-size:0.7em;
+	}
+	div.bar {
+		background-color:DarkRed;
+		color:white;
+		height:3em;
+		line-height:3em;
+		padding-right:1em;
+		margin-bottom:2px;
+		text-align:right;
+		margin-left:22em;
+	}
+	div.label {
+		height:3em;
+		line-height:3em;
+		padding-right:1em;
+		margin-bottom:2px;
+		float:left;
+		width:20em;
+		text-align:right;
+	}
+
+	path {
+		fill: #81BEF7;
+		stroke: #fff;
+		stroke-width: 2.5px;
+		stroke-linejoin: round;
+	}
+
+</style>
+
+<head>
+	<script src="http://d3js.org/d3.v3.min.js"></script>
+	<script>
+	
+	document.title = 'cacheMonitoring';
+
+	function draw(data) { // yoon // stick graph
+		"use strict";
+
+				// yoon // json object sorting example
+				/*
+				data.record.sort(function decSort(a,b) {
+					//console.log(a.totalCandidate)
+					if(a.totalCandidate == b.totalCandidate) return 0;
+					return a.totalCandidate > b.totalCandidate ? -1 : 1;
+				});*/
+
+				console.log(data.record)
+				
+				d3.select("body")
+				.append("div")
+				.attr("class", "chart")
+				.selectAll("div.bar")
+				.data(data.record)
+				.enter()
+				.append("div")
+				.attr("class","line")
+
+				d3.selectAll("div.line")
+				.append("div")
+				.attr("class","label")
+				.text(function(d){return d.time})
+				
+				d3.selectAll("div.line")
+				.append("div")
+				.attr("class","bar")
+				.style("width", function(d){return (d.miss/d.reference)*500 + "px"})
+				.text(function(d){return Math.round(d.missrate*100)});
+
+			}
+		
+	</script></head>
+
+	<body>
+
+	<script>
+			d3.json('data/d3.json', draw);
+		</script>
+		
+	</body>
